@@ -167,7 +167,10 @@
                     <option value="pt">PT</option>
                 </select>
                 <!-- ##### CAMBIO APLICADO AQUÍ ##### -->
-                <a href="https://discord.gg/azvnvCXuNb" class="btn btn-cta" style="padding: 8px 15px;" target="_blank" rel="noopener noreferrer" data-translate="login_discord"><i class="fab fa-discord" style="margin-right: 6px;"></i> Login</a>
+                <a href="https://discord-login-api-production.up.railway.app/login" class="btn btn-cta" style="padding: 8px 15px;" target="_blank" rel="noopener noreferrer" data-translate="login_discord">
+  <i class="fab fa-discord" style="margin-right: 6px;"></i> Login con Discord
+</a>
+<div id="user-info" style="margin-left: 10px;"></div>
             </div>
         </div>
     </header>
@@ -373,5 +376,26 @@
             revealOnScroll();
         });
     </script>
+
+<script>
+  async function getUser() {
+    try {
+      const res = await fetch('https://discord-login-api-production.up.railway.app/me', {
+        credentials: 'include'
+      });
+      if (!res.ok) return;
+      const user = await res.json();
+      const container = document.getElementById('user-info');
+      container.innerHTML = `
+        <p style="margin: 0; color: var(--text-color); font-weight: 600;">${user.username}#${user.discriminator}</p>
+        <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" width="38" style="border-radius: 50%; margin-top: 4px;" />
+      `;
+    } catch (err) {
+      console.error('No logueado', err);
+    }
+  }
+  getUser();
+</script>
+
 </body>
 </html>
