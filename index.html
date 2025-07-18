@@ -278,7 +278,7 @@
                         plansData[category].forEach(plan => {
                             const planCard = document.createElement('div');
                             planCard.className = 'plan-card reveal';
-                            planCard.innerHTML = `<h3 class="plan-title">${plan.title}</h3><div class="plan-price">$${plan.price.toFixed(2)} <span>USD <span data-translate="plan_monthly">${translations[lang].plan_monthly}</span></span></div><ul class="plan-features">${plan.features.map(f => `<li><i class="fas fa-check-circle"></i> ${f}</li>`).join('')}</ul><a href="#" class="btn btn-cta" data-translate="plan_button">${translations[lang].plan_button}</a>`;
+                            planCard.innerHTML = `<h3 class="plan-title">${plan.title}</h3><div class="plan-price">$${plan.price.toFixed(2)} <span>USD <span data-translate="plan_monthly">${translations[lang].plan_monthly}</span></span></div><ul class="plan-features">${plan.features.map(f => `<li><i class="fas fa-check-circle"></i> ${f}</li>`).join('')}</ul><a href="https://discord.gg/3pxUU9gYVc" class="btn btn-cta" data-translate="plan_button" target="_blank" rel="noopener noreferrer">${translations[lang].plan_button}</a>`;
                             container.appendChild(planCard);
                         });
                     }
