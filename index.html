@@ -329,78 +329,44 @@
                 });
             });
             
-            
-    const reviewsGrid = document.getElementById('reviews-grid');
-    const noReviewsMessage = document.getElementById('no-reviews-message');
-    const ratingStars = [...document.querySelectorAll('#star-rating .star')];
-    const ratingValueInput = document.getElementById('rating-value');
-
-    function guardarReseñaLocalStorage(review) {
-        const reseñas = JSON.parse(localStorage.getItem('reseñas')) || [];
-        reseñas.unshift(review);
-        localStorage.setItem('reseñas', JSON.stringify(reseñas));
-    }
-
-    function cargarReseñas() {
-        const reseñas = JSON.parse(localStorage.getItem('reseñas')) || [];
-        if (reseñas.length > 0 && noReviewsMessage) {
-            noReviewsMessage.style.display = 'none';
-        }
-        reseñas.forEach(review => renderReview(review));
-    }
-
-    function renderReview({ name, text, rating }) {
-        const newReviewCard = document.createElement('div');
-        newReviewCard.className = 'review-card reveal visible';
-
-        const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=1A1C24&color=F0F0F0&size=50&rounded=true&bold=true`;
-        const starHTML = `<div class="stars">${'★'.repeat(rating)}</div><div class="stars" style="color:var(--text-muted); text-shadow:none;">${'☆'.repeat(5-rating)}</div>`;
-
-        newReviewCard.innerHTML = `
-            <div class="review-header">
-                <img src="${avatarUrl}" alt="Avatar de ${name}">
-                <div>
-                    <h4>${name}</h4>
-                    <div style="display:flex;">${starHTML}</div>
-                </div>
-            </div>
-            <p>${text}</p>
-        `;
-
-        reviewsGrid.prepend(newReviewCard);
-    }
-
-    ratingStars.forEach(star => {
-        star.addEventListener('click', () => {
-            const rating = star.dataset.value;
-            ratingValueInput.value = rating;
-            ratingStars.forEach(s => s.classList.remove('selected'));
-            star.classList.add('selected');
-        });
-    });
-
-    document.getElementById('review-form-element').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = document.getElementById('name').value.trim();
-        const text = document.getElementById('review-text').value.trim();
-        const rating = parseInt(ratingValueInput.value);
-
-        if (!name || !text || rating === 0) {
-            alert('Por favor, completa todos los campos y selecciona una calificación.');
-            return;
-        }
-
-        const nuevaReseña = { name, text, rating };
-        guardarReseñaLocalStorage(nuevaReseña);
-        renderReview(nuevaReseña);
-
-        e.target.reset();
-        ratingStars.forEach(s => s.classList.remove('selected'));
-        ratingValueInput.value = 0;
-    });
-
-    cargarReseñas();
-
+            document.getElementById('review-form-element').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('name').value.trim();
+                const text = document.getElementById('review-text').value.trim();
+                const rating = parseInt(ratingValueInput.value);
+                
+                if (!name || !text || rating === 0) {
+                    alert('Por favor, completa todos los campos y selecciona una calificación.');
+                    return;
+                }
+                
+                const reviewsGrid = document.getElementById('reviews-grid');
+                const noReviewsMessage = document.getElementById('no-reviews-message');
+                if (noReviewsMessage) noReviewsMessage.style.display = 'none';
+                
+                const newReviewCard = document.createElement('div');
+                newReviewCard.className = 'review-card reveal visible';
+                
+                const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=1A1C24&color=F0F0F0&size=50&rounded=true&bold=true`;
+                
+                const starHTML = `<div class="stars">${'★'.repeat(rating)}</div><div class="stars" style="color:var(--text-muted); text-shadow:none;">${'☆'.repeat(5-rating)}</div>`;
+                
+                newReviewCard.innerHTML = `
+                    <div class="review-header">
+                        <img src="${avatarUrl}" alt="Avatar de ${name}">
+                        <div>
+                            <h4>${name}</h4>
+                            <div style="display:flex;">${starHTML}</div>
+                        </div>
+                    </div>
+                    <p>${text}</p>
+                `;
+                reviewsGrid.prepend(newReviewCard);
+                
+                e.target.reset();
+                ratingStars.forEach(s => s.classList.remove('selected'));
+                ratingValueInput.value = 0;
+            });
             
             // --- INICIALIZACIÓN ---
             switchLanguage();
